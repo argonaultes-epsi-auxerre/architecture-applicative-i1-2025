@@ -1,3 +1,5 @@
+from bde import Bde
+
 class School:
 
     def __init__(self, name):
@@ -21,7 +23,7 @@ class School:
 
     @classmethod
     def export_json(cls, school):
-        pass
+        print('export json')
 
 
 
@@ -35,16 +37,21 @@ class Ifag(School):
     def __init__(self):
         super().__init__('ifag')
 
-epsi = Epsi()
+if __name__ == '__main__':
 
-ifag = Ifag()
+    bde = Bde()
+    # epsi = Epsi()
 
-epsi.add_student('student1')
+    # ifag = Ifag()
 
-print(f'{epsi.get_name()} {epsi.students}')
+    # epsi.add_student('student1')
 
-ifag.add_student('ifag_student1')
+    # print(f'{epsi.get_name()} {epsi.students}')
 
-print(f'{ifag.name} {ifag.students}')
+    # ifag.add_student('ifag_student1')
 
-print(epsi.students)
+    # print(f'{ifag.name} {ifag.students}')
+
+    # print(epsi.students)
+
+
