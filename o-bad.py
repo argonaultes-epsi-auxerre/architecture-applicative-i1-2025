@@ -13,8 +13,10 @@ class PersonStorage:
     def save_to_json(self, person):
         print(f'Save the {person} to a JSON file')
 
+    def save_to_xml(self, person):
+        print(f'Save the {person} to a XML file')
 
 if __name__ == '__main__':
     person = Person('John Doe')
     storage = PersonStorage()
-    storage.save_to_database(person)
+    storage.save_to_xml(person)
