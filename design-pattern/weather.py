@@ -1,5 +1,7 @@
 import random
 
+from abc import ABC, abstractmethod
+
 class Probe:
 
     def get_temperature(self):
@@ -11,20 +13,25 @@ class Probe:
     def get_pressure(self):
         return random.randint(800, 1100)
 
+class Display(ABC):
 
-class CurrentDisplay:
+    @abstractmethod
+    def update(self, temperature, humidity, pressure):
+        pass
 
-    def update_current(self, temperature, humidity, pressure):
+class CurrentDisplay(Display):
+
+    def update(self, temperature, humidity, pressure):
         print(f'Display current {temperature}, {humidity}, {pressure}')
 
-class ForecastDisplay:
+class ForecastDisplay(Display):
 
-    def update_forecast(self, temperature, humidity, pressure):
+    def update(self, temperature, humidity, pressure):
         print(f'Display forecast {temperature}, {humidity}, {pressure}')
 
-class StatisticsDisplay:
+class StatisticsDisplay(Display):
 
-    def update_statistics(self, temperature, humidity, pressure):
+    def update(self, temperature, humidity, pressure):
         print(f'Display statistics {temperature}, {humidity}, {pressure}')
 
 
@@ -32,15 +39,37 @@ class WeatherData:
 
     def __init__(self, probe : Probe, current_conditions_display: CurrentDisplay, statistics_display: StatisticsDisplay, forecast_display: ForecastDisplay):
         self.__probe = probe
-        self.__current_conditions_display = current_conditions_display
-        self.__statitics_display = statistics_display
-        self.__forecast_display = forecast_display
+        self.__displays = []
+        self.__displays.append(current_conditions_display)
+        self.__displays.append(statistics_display)
+        self.__displays.append(forecast_display)
+        self.__temperature = None
+        self.__humidity = None
+        self.__pressure = None
+
+    def add_display(self, display: Display):
+        self.__displays.append(display)
 
 
     def measurements_changed(self):
-        temperature = self.__probe.get_temperature()
-        humidity = self.__probe.get_humidity()
-        pressure = self.__probe.get_pressure()
-        self.__current_conditions_display.update_current(temperature, humidity, pressure)
-        self.__statitics_display.update_statistics(temperature, humidity, pressure)
-        self.__forecast_display.update_forecast(temperature, humidity, pressure)
+        self.__temperature = self.__probe.get_temperature()
+        self.__humidity = self.__probe.get_humidity()
+        self.__pressure = self.__probe.get_pressure()
+        self.notify()
+    
+    def notify(self):
+        for display in self.__displays:
+            display.update(self.__temperature, self.__humidity, self.__pressure)
+
+
+
+if __name__ == '__main__':
+    weather_data = WeatherData(Probe(), CurrentDisplay(), StatisticsDisplay(), ForecastDisplay())
+
+    weather_data.measurements_changed()
+
+    new_big_screen = StatisticsDisplay()
+
+    weather_data.add_display(new_big_screen)
+
+    weather_data.measurements_changed()
