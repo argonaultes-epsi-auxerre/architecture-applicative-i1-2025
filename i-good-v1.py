@@ -1,26 +1,26 @@
 from abc import ABC, abstractmethod
 
 
-class Vehicle(ABC):
+class Movable(ABC):
     @abstractmethod
     def go(self):
         pass
 
+class Flyable(ABC):
     @abstractmethod
     def fly(self):
         pass
 
-class Aircraft(Vehicle):
+class Aircraft(Movable, Flyable):
     def go(self):
         print("Taxiing")
 
     def fly(self):
         print("Flying")
 
-class Car(Vehicle):
+class Car(Movable):
     def go(self):
         print("Going")
 
-    def fly(self):
-        raise Exception('The car cannot fly')
+
 
