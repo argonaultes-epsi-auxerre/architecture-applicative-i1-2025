@@ -18,14 +18,35 @@ class Flyable(ABC):
     def fly(self):
         pass
 
+class FlyableInSky(Flyable):
+
+    def fly(self):
+        print('I can fly')
+
+class FlyableNone(Flyable):
+
+    def fly(self):
+        print('Unable to fly')
 
 class Duck(ABC):
     
+    def __init__(self, fly_behavior: Flyable = FlyableNone()):
+        self.__fly_behavior = fly_behavior
+
+    def perform_fly(self):
+        self.__fly_behavior.fly()
+
+    def set_fly_behavior(self, fly_behavior: Flyable):
+        self.__fly_behavior = fly_behavior
+
     @abstractmethod
     def display(self):
         pass
 
-class MallardDuck(Duck, Swimable, Quackable, Flyable):
+class MallardDuck(Duck, Swimable, Quackable):
+
+    def __init__(self):
+        super().__init__(FlyableInSky())
 
     def display(self):
         print("I'm a mallard duck!")
@@ -40,6 +61,9 @@ class MallardDuck(Duck, Swimable, Quackable, Flyable):
         print("I can fly")
 
 class GoldenEyeDuck(Duck, Swimable, Quackable, Flyable):
+
+    def __init__(self):
+        super().__init__(FlyableInSky())
 
     def display(self):
         print("GoldenEyyyye")
@@ -71,10 +95,12 @@ if __name__ == '__main__':
 
     mld = MallardDuck()
     mld.display()
-    mld.fly()
+    mld.perform_fly()
     ged = GoldenEyeDuck()
     ged.display()
-    ged.fly()
+    ged.perform_fly()
     ged.quack()
     yellow = RubberDuck()
     yellow.quack()
+    mld.set_fly_behavior(FlyableNone())
+    mld.perform_fly()
