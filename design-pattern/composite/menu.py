@@ -55,10 +55,12 @@ class BreakfastMenuIterator(Iterator):
         self.__position = 0
     
     def next_item(self):
-        #FIXME
+        next_item = self.__breakfast_menu_items[self.__position]
+        self.__position += 1
+        return next_item
 
     def has_more_items(self):
-        #FIXME
+        return self.__position < len(self.__breakfast_menu_items)
 
 class BreakfastMenu(IterableCollection):
 
@@ -72,13 +74,22 @@ class BreakfastMenu(IterableCollection):
         self.__menu_items.append(MenuItem(name, description, vegetarian, price))
 
     def create_iterator(self) -> Iterator:
-        return BreakfastMenuIterator() #FIXME
+        return BreakfastMenuIterator(self.__menu_items)
 
-    @property
-    def menu_items(self):
-        return self.__menu_items
+class LunchMenuIterator(Iterator):
+    def __init__(self, lunch_menu_items):
+        self.__lunch_menu_items = lunch_menu_items
+        self.__position = len(self.__lunch_menu_items) - 1
+    
+    def next_item(self):
+        next_item = self.__lunch_menu_items[self.__position]
+        self.__position -= 1
+        return next_item
 
-class LunchMenu:
+    def has_more_items(self):
+        return self.__position >= 0
+
+class LunchMenu(IterableCollection):
 
     def __init__(self):
         self.__menu_items = []
@@ -89,10 +100,8 @@ class LunchMenu:
     def add_item(self, name, description, vegetarian, price):
         self.__menu_items.append(MenuItem(name, description, vegetarian, price))
 
-    @property
-    def menu_items(self):
-        return self.__menu_items
-
+    def create_iterator(self):
+        return LunchMenuIterator(self.__menu_items)
 
 
 class Waiter:
@@ -102,14 +111,16 @@ class Waiter:
         self.__lunch_menu = lunch_menu
 
     def display_menu(self):
-        breakfast_menu = self.__breakfast_menu.menu_items
+        it_breakfast_menu = self.__breakfast_menu.create_iterator()
         print("==== Breakfast Menu ====")
-        for menu_item in breakfast_menu:
+        while it_breakfast_menu.has_more_items():
+            menu_item = it_breakfast_menu.next_item()
             print(menu_item)
 
-        lunch_menu = self.__lunch_menu.menu_items
+        it_lunch_menu = self.__lunch_menu.create_iterator()
         print("==== Lunch Menu ====")
-        for menu_item in lunch_menu:
+        while it_lunch_menu.has_more_items():
+            menu_item = it_lunch_menu.next_item()
             print(menu_item)
 
 if __name__ == '__main__':
