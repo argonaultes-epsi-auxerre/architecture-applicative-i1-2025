@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 class MenuItem:
 
     def __init__(self, name, description, vegetarian, price):
@@ -28,10 +30,37 @@ class MenuItem:
     def __repr__(self):
         return f'{self.__name} ({self.__description}) - {self.__price}'
 
-class BreakfastMenuIterator:
-    pass
 
-class BreakfastMenu:
+
+class Iterator(ABC):
+
+    @abstractmethod
+    def next_item(self):
+        pass
+
+    @abstractmethod
+    def has_more_items(self) -> bool:
+        pass
+
+class IterableCollection(ABC):
+
+    @abstractmethod
+    def create_iterator(self) -> Iterator:
+        pass
+
+class BreakfastMenuIterator(Iterator):
+    
+    def __init__(self, breakfast_menu_items):
+        self.__breakfast_menu_items = breakfast_menu_items
+        self.__position = 0
+    
+    def next_item(self):
+        #FIXME
+
+    def has_more_items(self):
+        #FIXME
+
+class BreakfastMenu(IterableCollection):
 
     def __init__(self):
         self.__menu_items = []
@@ -42,8 +71,8 @@ class BreakfastMenu:
     def add_item(self, name, description, vegetarian, price):
         self.__menu_items.append(MenuItem(name, description, vegetarian, price))
 
-    def create_iterator(self) -> BreakfastMenuIterator:
-        pass
+    def create_iterator(self) -> Iterator:
+        return BreakfastMenuIterator() #FIXME
 
     @property
     def menu_items(self):
@@ -63,6 +92,7 @@ class LunchMenu:
     @property
     def menu_items(self):
         return self.__menu_items
+
 
 
 class Waiter:
