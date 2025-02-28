@@ -22,6 +22,15 @@ class MenuItem:
     def price(self):
         return self.__price
 
+    def print_menu(self):
+        return f'{self.__name} ({self.__description}) - {self.__price}'
+
+    def __repr__(self):
+        return f'{self.__name} ({self.__description}) - {self.__price}'
+
+class BreakfastMenuIterator:
+    pass
+
 class BreakfastMenu:
 
     def __init__(self):
@@ -32,6 +41,9 @@ class BreakfastMenu:
 
     def add_item(self, name, description, vegetarian, price):
         self.__menu_items.append(MenuItem(name, description, vegetarian, price))
+
+    def create_iterator(self) -> BreakfastMenuIterator:
+        pass
 
     @property
     def menu_items(self):
@@ -61,15 +73,14 @@ class Waiter:
 
     def display_menu(self):
         breakfast_menu = self.__breakfast_menu.menu_items
-        print("Breakfast Menu")
-        
+        print("==== Breakfast Menu ====")
         for menu_item in breakfast_menu:
-            print(f'{menu_item.name} ({menu_item.description}) - {menu_item.price}')
-        lunch_menu = self.__lunch_menu.menu_items
+            print(menu_item)
 
-        print("Lunch Menu")
+        lunch_menu = self.__lunch_menu.menu_items
+        print("==== Lunch Menu ====")
         for menu_item in lunch_menu:
-            print(f'{menu_item.name} ({menu_item.description}) - {menu_item.price}')
+            print(menu_item)
 
 if __name__ == '__main__':
     jerome = Waiter(BreakfastMenu(), LunchMenu())
