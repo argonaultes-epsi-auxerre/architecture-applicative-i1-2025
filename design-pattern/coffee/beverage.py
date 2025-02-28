@@ -2,15 +2,38 @@ from abc import ABC, abstractmethod
 
 class Beverage(ABC):
 
-    def __init__(self, description):
+    def __init__(self, description, initial_cost):
         self.__description = description
         self.__milk = False
         self.__soy = False
         self.__mocha = False
+        self.__sugar = False
+        self.__initial_cost = initial_cost
 
-    @abstractmethod
     def cost(self):
-        pass
+        total_cost = self.__initial_cost
+
+        if self.milk:
+            total_cost += 0.2
+
+        if self.soy:
+            total_cost += 0.1
+
+        if self.mocha:
+            total_cost += 10
+
+        if self.sugar:
+            total_cost += 0.15
+
+        return total_cost
+
+    @property
+    def sugar(self):
+        return self.__sugar
+
+    @sugar.setter
+    def sugar(self, value):
+        self.__sugar = value
 
     @property
     def milk(self):
@@ -40,79 +63,25 @@ class Beverage(ABC):
 class Deca(Beverage):
 
     def __init__(self):
-        super().__init__('deca')
-        self.__initial_cost = 1.0
+        super().__init__('deca', 1.0)
 
-    def cost(self):
-        total_cost = self.__initial_cost
 
-        if self.milk:
-            total_cost += 0.2
-
-        if self.soy:
-            total_cost += 0.1
-
-        if self.mocha:
-            total_cost += 10
-
-        return total_cost
 
 class Americano(Beverage):
 
     def __init__(self):
-        super().__init__('americano')
-        self.__initial_cost = 2.0
-
-    def cost(self):
-        total_cost = self.__initial_cost
-
-        if self.milk:
-            total_cost += 0.2
-
-        if self.soy:
-            total_cost += 0.1
-
-        if self.mocha:
-            total_cost += 10
-
-        return total_cost
+        super().__init__('americano', 2.0)
 
 class Espresso(Beverage):
 
     def __init__(self):
-        super().__init__('espresso')
-        self.__initial_cost = 1.5
+        super().__init__('espresso', 1.5)
+        self.soy = True
 
-    def cost(self):
-        total_cost = self.__initial_cost
-
-        if self.milk:
-            total_cost += 0.2
-
-        if self.soy:
-            total_cost += 0.1
-
-        if self.mocha:
-            total_cost += 10
-
-        return total_cost
 
 class Chocolate(Beverage):
 
     def __init__(self):
-        super().__init__('chocolate')
-        self.__initial_cost = 3.0
+        super().__init__('chocolate', 3.0)
+        self.mocha = True
 
-    def cost(self):
-        total_cost = self.__initial_cost
-
-        if self.milk:
-            total_cost += 0.2
-
-        if self.soy:
-            total_cost += 0.1
-
-        if self.mocha:
-            total_cost += 10
-
-        return total_cost

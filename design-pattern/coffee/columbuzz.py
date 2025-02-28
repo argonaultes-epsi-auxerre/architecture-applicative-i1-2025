@@ -6,5 +6,6 @@ if __name__ == '__main__':
     # calculate the total cost
     americano_1 = Americano()
     americano_2 = Americano()
+    americano_2.sugar = True
     espresso_1 = Espresso()
     print(f'total cost: {americano_1.cost() + americano_2.cost() + espresso_1.cost()} €')
