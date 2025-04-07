@@ -10,7 +10,7 @@ class BergerNaive:
     @classmethod
     def get_instance(cls):
         if cls.__berger is None:
-            cls.__berger = Berger()
+            cls.__berger = BergerNaive()
         return cls.__berger
 
 
@@ -45,6 +45,8 @@ class Berger(metaclass=SingletonBerger):
 
         # ...
 
+class Laptop(metaclass=SingletonBerger):
+    pass
 
 
 class Troupeau:
@@ -66,3 +68,9 @@ if __name__ == '__main__':
     berger_2 = Berger() # est-ce que berger_2 est bien identique à berger_1 ?
     print(f'berger_2: {berger_2}')
     assert berger_1 == berger_2
+
+
+    dell = Laptop()
+    hp = Laptop()
+    assert dell == hp
+    
